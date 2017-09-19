@@ -17,8 +17,8 @@ COMPLDIR = $(shell pkg-config --variable=completionsdir bash-completion)
 MSGLANGS = $(notdir $(wildcard msg/*po))
 MSGOBJS = $(MSGLANGS:.po=/LC_MESSAGES/ncursesFM.mo)
 MSGFILES = $(addprefix $(LOCALEDIR)/,$(MSGOBJS))
-LIBS =-lpthread -lmagic $(shell pkg-config --libs libarchive ncursesw libudev)
-CFLAGS =-D_GNU_SOURCE $(shell pkg-config --cflags libarchive ncursesw libudev) -DCONFDIR=\"$(CONFDIR)\" -DBINDIR=\"$(BINDIR)\" -DLOCALEDIR=\"$(LOCALEDIR)\"
+LIBS =-lpthread -lmagic $(shell pkg-config --libs libarchive ncursesw libudev libconfig libsystemd)
+CFLAGS =-D_GNU_SOURCE $(shell pkg-config --cflags libarchive ncursesw libudev libconfig libsystemd) -DCONFDIR=\"$(CONFDIR)\" -DBINDIR=\"$(BINDIR)\" -DLOCALEDIR=\"$(LOCALEDIR)\"
 
 # sanity checks for completion dir
 ifeq ("$(COMPLDIR)","")
@@ -30,23 +30,11 @@ endif
 
 ifeq (,$(findstring $(MAKECMDGOALS),"clean install uninstall"))
 
-ifneq ("$(DISABLE_LIBCONFIG)","1")
-LIBCONFIG=$(shell pkg-config --silence-errors --libs libconfig)
-endif
-
 ifneq ("$(DISABLE_LIBNOTIFY)","1")
 LIBNOTIFY=$(shell pkg-config --silence-errors --libs libnotify)
 endif
 
-ifneq ("$(DISABLE_LIBSYSTEMD)","1")
-ifeq ("$(shell pkg-config --atleast-version=221 systemd && echo yes)", "yes")
-LIBSYSTEMD=$(shell pkg-config --silence-errors --libs libsystemd)
-else
-$(info systemd support disabled, minimum required version 221.)
-endif
-endif
-
-LIBS+=$(LIBCONFIG) $(LIBNOTIFY) $(LIBSYSTEMD)
+LIBS+=$(LIBNOTIFY)
 
 ifneq ("$(DISABLE_LIBCUPS)","1")
 ifneq ("$(wildcard /usr/include/cups/cups.h)","")
@@ -56,19 +44,9 @@ $(info libcups support enabled.)
 endif
 endif
 
-ifneq ("$(LIBCONFIG)","")
-CFLAGS+=-DLIBCONFIG_PRESENT $(shell pkg-config --silence-errors --cflags libconfig)
-$(info libconfig support enabled.)
-endif
-
 ifneq ("$(LIBNOTIFY)","")
 CFLAGS+=-DLIBNOTIFY_PRESENT $(shell pkg-config --silence-errors --cflags libnotify)
 $(info libnotify support enabled.)
-endif
-
-ifneq ("$(LIBSYSTEMD)","")
-CFLAGS+=-DSYSTEMD_PRESENT $(shell pkg-config --silence-errors --cflags libsystemd)
-$(info libsystemd support enabled.)
 endif
 
 endif

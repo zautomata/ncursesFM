@@ -106,10 +106,8 @@ struct conf {
     int show_hidden;
     char starting_dir[PATH_MAX + 1];
     int second_tab_starting_dir;
-#ifdef SYSTEMD_PRESENT
     int inhibit;
     int automount;
-#endif
     int starting_helper;
     int loglevel;
     int persistent_log;
@@ -221,10 +219,7 @@ struct search_vars sv;
  */
 int active, quit, num_of_jobs, cont, device_init, has_desktop, num_selected;
 
-#ifdef SYSTEMD_PRESENT
-pthread_t install_th;
-#endif
-pthread_t worker_th, search_th;
+pthread_t install_th, worker_th, search_th;
 
 /*
  * pointer to abstract which list of strings currently 

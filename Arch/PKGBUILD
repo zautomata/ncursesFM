@@ -13,11 +13,9 @@ optdepends=('xdg-utils: xdg-open support'
             'udisks2: mountable drives and ISO mount support'
             'packagekit: package installation support'
             'upower: AC (dis)connection events support')
-# libcups, libconfig and libnotify are optional build dep.
+# libcups and libnotify are optional build dep.
 # If compiled without them, the program will run just fine;
-# but that would disable desktop notifications, config file read and printing support.
-# systemd too is an optdep. But in arch libudev is packaged together with it,
-# and libudev is a mandatory dep.
+# but that would disable desktop notifications and printing support.
 makedepends=('git' 'bash-completion')
 source=("git://github.com/FedeDP/${_gitname}.git")
 backup=('etc/default/ncursesFM.conf')

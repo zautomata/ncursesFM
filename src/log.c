@@ -51,26 +51,12 @@ static void log_current_options(void) {
 #else
     fprintf(log_file, "false\n");
 #endif
-    fprintf(log_file, "* LIBCONFIG_PRESENT: ");
-#ifdef LIBCONFIG_PRESENT
-    fprintf(log_file, "true\n");
-#else
-    fprintf(log_file, "false\n");
-#endif
-    fprintf(log_file, "* SYSTEMD_PRESENT:");
-#ifdef SYSTEMD_PRESENT
-    fprintf(log_file, "true\n");
-#else
-    fprintf(log_file, "false\n");
-#endif
     fprintf(log_file, "\nStarting options:\n");
     fprintf(log_file, "* Editor: %s\n", config.editor);
     fprintf(log_file, "* Starting directory: %s\n", config.starting_dir);
     fprintf(log_file, "* Second tab starting dir: %d\n", config.second_tab_starting_dir);
-#ifdef SYSTEMD_PRESENT
     fprintf(log_file, "* Inhibition: %d\n", config.inhibit);
     fprintf(log_file, "* Automount: %d\n", config.automount);
-#endif
     fprintf(log_file, "* Starting with helper window: %d\n", config.starting_helper);
     fprintf(log_file, "* Log level: %d\n", config.loglevel);
     fprintf(log_file, "* Log persistency: %d\n", config.persistent_log);
